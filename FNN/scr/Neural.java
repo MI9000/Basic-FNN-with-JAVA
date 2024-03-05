@@ -157,14 +157,14 @@ public class Neural {
 
     private<T extends activation> void backward(T act) {
         QUASO cost = hiddenlayer_ac[hiddenlayer_ac.length-1].costBackward(target_data);
-        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].relu_prime());
+        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].activation_prime(act));
         QUASO temp;
         
         for (int i = hiddenlayer_ac.length-1 ; i > -1; i--) {
             
             if(i != hiddenlayer_ac.length-1){ 
                 temp = weight[i+1].transpose().dot(delta);
-                delta = temp.mul(hiddenlayer[i].activation(act));
+                delta = temp.mul(hiddenlayer[i].activation_prime(act));
             
             } 
             
