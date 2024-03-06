@@ -132,7 +132,6 @@ public class Neural {
     
 
     private<T extends activation> void forward(T act){
-
         for (int i = 0; i < hiddenlayer.length; i++) {
             
             if(i == 0){
@@ -157,14 +156,14 @@ public class Neural {
 
     private<T extends activation> void backward(T act) {
         QUASO cost = hiddenlayer_ac[hiddenlayer_ac.length-1].costBackward(target_data);
-        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].activation_prime(act));
+        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].relu_prime());
         QUASO temp;
         
         for (int i = hiddenlayer_ac.length-1 ; i > -1; i--) {
             
             if(i != hiddenlayer_ac.length-1){ 
                 temp = weight[i+1].transpose().dot(delta);
-                delta = temp.mul(hiddenlayer[i].activation_prime(act));
+                delta = temp.mul(hiddenlayer[i].activation(act));
             
             } 
             
@@ -178,7 +177,26 @@ public class Neural {
 
 
     }
+    public void getallweight(){
+        System.out.println("show weigth");
+        for (int i = 0; i < weight.length; i++) {
+                System.out.println("weight ตัวที่ " + "" + i);
+                weight[i].show();
+                System.out.println();
+            }
+        
+    }
 
+    public void getallbias(){
+        System.out.println("show bias");
+        for (int i = 0; i < weight.length; i++) {
+            System.out.println("bias ตัวที่ " + "" + i);
+            bias[i].show();
+            System.out.println();
+        }
+    }
+
+    
 
     
 }

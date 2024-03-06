@@ -15,9 +15,9 @@ public class Main_ {
 
       Relu relu = new Relu();
       long startTime = System.nanoTime();
-      Neural number = new Neural(train.transpose(), target.transpose(), new int[] {3, 10, 7, 1});
-      number.setEpoch(10000);
-      number.setLearningRate(0.0000001);
+      Neural number = new Neural(train.transpose(), target.transpose(), new int[] {3, 10, 10, 1});
+      number.setEpoch(40000000);
+      number.setLearningRate(0.0000000001);
       number.train(relu);
 
       long endTime = System.nanoTime();
@@ -25,13 +25,16 @@ public class Main_ {
       
       System.out.println("เวลาที่ใช้ในการรัน: " + timeElapsed + " นาโนวินาที");
 
-      while (true) {
-         Double [][] test = {{input.nextDouble()},
-                             {input.nextDouble()},
-                             {input.nextDouble()}};
-         QUASO testQuaso = new QUASO(0, 0, false);
-         number.predict(testQuaso.fromArray(test), relu);
-      }
+      number.getallweight();
+      number.getallbias();
+
+      // while (true) {
+      //    Double [][] test = {{input.nextDouble()},
+      //                        {input.nextDouble()},
+      //                        {input.nextDouble()}};
+      //    QUASO testQuaso = new QUASO(0, 0, false);
+      //    number.predict(testQuaso.fromArray(test), relu);
+      // }
    
    }
 
