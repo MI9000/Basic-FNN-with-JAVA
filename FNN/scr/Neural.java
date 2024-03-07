@@ -132,7 +132,6 @@ public class Neural {
     
 
     private<T extends activation> void forward(T act[]){
-
         for (int i = 0; i < hiddenlayer.length; i++) {
             
             if(i == 0){
@@ -164,7 +163,11 @@ public class Neural {
             
             if(i != hiddenlayer_ac.length-1){ 
                 temp = weight[i+1].transpose().dot(delta);
+<<<<<<< HEAD
                 delta = temp.mul(hiddenlayer[i].activation_prime(act[i]));
+=======
+                delta = temp.mul(hiddenlayer[i].activation(act));
+>>>>>>> 986b0b3185eb85b9ad8bbc758eaaa3b66a703a09
             
             } 
             
@@ -178,7 +181,26 @@ public class Neural {
 
 
     }
+    public void getallweight(){
+        System.out.println("show weigth");
+        for (int i = 0; i < weight.length; i++) {
+                System.out.println("weight ตัวที่ " + "" + i);
+                weight[i].show();
+                System.out.println();
+            }
+        
+    }
 
+    public void getallbias(){
+        System.out.println("show bias");
+        for (int i = 0; i < weight.length; i++) {
+            System.out.println("bias ตัวที่ " + "" + i);
+            bias[i].show();
+            System.out.println();
+        }
+    }
+
+    
 
     
 }
