@@ -13,24 +13,24 @@ public class Main_ {
       rTarget();
       rTrain();
 
-      Relu relu = new Relu();
+      ACTIVATION__[] activation_array = {new Relu(),new Sigmoid(),new Relu()};
       long startTime = System.nanoTime();
-      Neural number = new Neural(train.transpose(), target.transpose(), new int[] {3, 10, 7, 1});
+      Neural number = new Neural(train.transpose(), target.transpose(), new int[] {3, 10, 10, 1});
       number.setEpoch(10000);
       number.setLearningRate(0.0000001);
-      number.train(relu);
+      number.train(activation_array);
 
       long endTime = System.nanoTime();
       long timeElapsed = endTime - startTime;
       
-      System.out.println("เวลาที่ใช้ในการรัน: " + timeElapsed + " นาโนวินาที");
+      System.out.println("เวลาที่ใช้ในการรัน: " + timeElapsed/1000000000 + " วินาที");
 
       while (true) {
          Double [][] test = {{input.nextDouble()},
                              {input.nextDouble()},
                              {input.nextDouble()}};
          QUASO testQuaso = new QUASO(0, 0, false);
-         number.predict(testQuaso.fromArray(test), relu);
+         number.predict(testQuaso.fromArray(test), activation_array);
       }
    
    }
@@ -74,7 +74,17 @@ public class Main_ {
    }
 }
 
-class Relu extends activation{
+class Relu extends ACTIVATION__{
+   public double forward(double x){
+       return Math.max(0, x);
+   }
+
+   public double backward(double x){
+       return x > 0 ? 1 : 0;
+   }
+}
+
+class Sigmoid extends ACTIVATION__{
    public double forward(double x){
        return Math.max(0, x);
    }

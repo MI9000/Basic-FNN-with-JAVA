@@ -91,7 +91,7 @@ public class Neural {
         }
     }
 
-    public<T extends activation> void train(T act) {
+    public<T extends activation> void train(T[] act) {
 
         long startTime = System.currentTimeMillis();
 
@@ -105,24 +105,24 @@ public class Neural {
 
     }
 
-    public<T extends activation> void predict(QUASO input, T act){
+    public<T extends activation> void predict(QUASO input, T[] act){
         QUASO[] z = new QUASO[hiddenlayer.length];
         QUASO[] a = new QUASO[hiddenlayer.length];
 
         for (int i = 0; i < hiddenlayer.length; i++) {
             if(i == 0){
                 z[0] = weight[0].dot(input).addBias(bias[0]);
-                a[0] = z[0].activation(act);
+                a[0] = z[0].activation(act[i]);
             }
 
             else if (i != hiddenlayer.length - 1){
                 z[i] = weight[i].dot(a[i-1]).addBias(bias[i]);
-                a[i] = z[i].activation(act);
+                a[i] = z[i].activation(act[i]);
             }
 
             else{
                 z[i] = weight[i].dot(a[i-1]).addBias(bias[i]);
-                a[i] = z[i].activation(act);
+                a[i] = z[i].activation(act[i]);
             }
 
        }
@@ -131,23 +131,23 @@ public class Neural {
     }
     
 
-    private<T extends activation> void forward(T act){
+    private<T extends activation> void forward(T act[]){
 
         for (int i = 0; i < hiddenlayer.length; i++) {
             
             if(i == 0){
                 hiddenlayer[i] = weight[i].dot(data_train).addBias(bias[i]);
-                hiddenlayer_ac[i] = hiddenlayer[i].activation(act);
+                hiddenlayer_ac[i] = hiddenlayer[i].activation(act[i]);
             }
             
             else if (i != hiddenlayer.length-1){
                 hiddenlayer[i] = weight[i].dot(hiddenlayer_ac[i-1]).addBias(bias[i]);
-                hiddenlayer_ac[i] = hiddenlayer[i].activation(act);
+                hiddenlayer_ac[i] = hiddenlayer[i].activation(act[i]);
             }
             
             else{
                 hiddenlayer[i] = weight[i].dot(hiddenlayer_ac[i-1]).addBias(bias[i]);
-                hiddenlayer_ac[i] = hiddenlayer[i].activation(act);
+                hiddenlayer_ac[i] = hiddenlayer[i].activation(act[i]);
             }
             
 
@@ -155,16 +155,16 @@ public class Neural {
 
     }
 
-    private<T extends activation> void backward(T act) {
+    private<T extends activation> void backward(T[] act) {
         QUASO cost = hiddenlayer_ac[hiddenlayer_ac.length-1].costBackward(target_data);
-        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].activation_prime(act));
+        QUASO delta = cost.mul(hiddenlayer[hiddenlayer_ac.length-1].relu_prime());
         QUASO temp;
         
         for (int i = hiddenlayer_ac.length-1 ; i > -1; i--) {
             
             if(i != hiddenlayer_ac.length-1){ 
                 temp = weight[i+1].transpose().dot(delta);
-                delta = temp.mul(hiddenlayer[i].activation_prime(act));
+                delta = temp.mul(hiddenlayer[i].activation_prime(act[i]));
             
             } 
             

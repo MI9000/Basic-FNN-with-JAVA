@@ -434,7 +434,8 @@ public class QUASO extends ProgressMatrix {
                 sum += Math.abs(yTrue.matrix[i][j] - yPred.matrix[i][j]);
             }
         }
-        return 0.5 * sum;
+        sum = sum/(yPred.row);
+        return 0.5 * sum * sum;
     }
 
     
